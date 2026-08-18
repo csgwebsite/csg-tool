@@ -1,9 +1,77 @@
 -- ==============================================================================
--- Cóc Task - Supabase Database Schema & Storage Setup
--- Copy and paste this script into Supabase SQL Editor to initialize all tables
+-- Cóc Task - Hoàn thiện cấu trúc bảng Supabase (Đầy đủ tất cả các cột)
+-- Chạy đoạn mã này trong Supabase SQL Editor để bổ sung các cột còn thiếu
 -- ==============================================================================
 
--- 1. Create Members Table
+-- 1. Bổ sung các cột cho bảng PROJECTS
+CREATE TABLE IF NOT EXISTS public.projects (
+    id TEXT PRIMARY KEY,
+    name TEXT NOT NULL,
+    code TEXT,
+    description TEXT,
+    color TEXT DEFAULT '#f59e0b',
+    status TEXT DEFAULT 'active',
+    logo TEXT,
+    milestones JSONB DEFAULT '[]'::jsonb,
+    links JSONB DEFAULT '[]'::jsonb,
+    "memberIds" JSONB DEFAULT '[]'::jsonb,
+    "leaderId" TEXT,
+    "startDate" TEXT,
+    "endDate" TEXT,
+    "isFrozen" BOOLEAN DEFAULT false,
+    "createdAt" TIMESTAMPTZ DEFAULT now()
+);
+
+-- Thêm các cột nếu bảng projects đã tồn tại từ trước
+ALTER TABLE public.projects ADD COLUMN IF NOT EXISTS code TEXT;
+ALTER TABLE public.projects ADD COLUMN IF NOT EXISTS logo TEXT;
+ALTER TABLE public.projects ADD COLUMN IF NOT EXISTS milestones JSONB DEFAULT '[]'::jsonb;
+ALTER TABLE public.projects ADD COLUMN IF NOT EXISTS links JSONB DEFAULT '[]'::jsonb;
+ALTER TABLE public.projects ADD COLUMN IF NOT EXISTS "memberIds" JSONB DEFAULT '[]'::jsonb;
+ALTER TABLE public.projects ADD COLUMN IF NOT EXISTS "leaderId" TEXT;
+ALTER TABLE public.projects ADD COLUMN IF NOT EXISTS "startDate" TEXT;
+ALTER TABLE public.projects ADD COLUMN IF NOT EXISTS "endDate" TEXT;
+ALTER TABLE public.projects ADD COLUMN IF NOT EXISTS "isFrozen" BOOLEAN DEFAULT false;
+
+-- 2. Bổ sung các cột cho bảng TASKS
+CREATE TABLE IF NOT EXISTS public.tasks (
+    id TEXT PRIMARY KEY,
+    code TEXT,
+    title TEXT NOT NULL,
+    description TEXT,
+    "projectId" TEXT,
+    priority TEXT DEFAULT 'medium',
+    "assigneeId" TEXT,
+    "assignerId" TEXT,
+    "reviewerId" TEXT,
+    deadline TEXT,
+    status TEXT DEFAULT 'todo',
+    tags JSONB DEFAULT '[]'::jsonb,
+    "createdBy" TEXT,
+    comments JSONB DEFAULT '[]'::jsonb,
+    "approvedBy" TEXT,
+    "fileLink" TEXT,
+    "usesAI" BOOLEAN DEFAULT false,
+    links JSONB DEFAULT '[]'::jsonb,
+    "createdAt" TIMESTAMPTZ DEFAULT now()
+);
+
+-- Thêm các cột nếu bảng tasks đã tồn tại từ trước
+ALTER TABLE public.tasks ADD COLUMN IF NOT EXISTS code TEXT;
+ALTER TABLE public.tasks ADD COLUMN IF NOT EXISTS "projectId" TEXT;
+ALTER TABLE public.tasks ADD COLUMN IF NOT EXISTS "assigneeId" TEXT;
+ALTER TABLE public.tasks ADD COLUMN IF NOT EXISTS "assignerId" TEXT;
+ALTER TABLE public.tasks ADD COLUMN IF NOT EXISTS "reviewerId" TEXT;
+ALTER TABLE public.tasks ADD COLUMN IF NOT EXISTS deadline TEXT;
+ALTER TABLE public.tasks ADD COLUMN IF NOT EXISTS tags JSONB DEFAULT '[]'::jsonb;
+ALTER TABLE public.tasks ADD COLUMN IF NOT EXISTS "createdBy" TEXT;
+ALTER TABLE public.tasks ADD COLUMN IF NOT EXISTS comments JSONB DEFAULT '[]'::jsonb;
+ALTER TABLE public.tasks ADD COLUMN IF NOT EXISTS "approvedBy" TEXT;
+ALTER TABLE public.tasks ADD COLUMN IF NOT EXISTS "fileLink" TEXT;
+ALTER TABLE public.tasks ADD COLUMN IF NOT EXISTS "usesAI" BOOLEAN DEFAULT false;
+ALTER TABLE public.tasks ADD COLUMN IF NOT EXISTS links JSONB DEFAULT '[]'::jsonb;
+
+-- 3. Bổ sung các cột cho bảng MEMBERS
 CREATE TABLE IF NOT EXISTS public.members (
     id TEXT PRIMARY KEY,
     "fullName" TEXT NOT NULL,
@@ -20,86 +88,49 @@ CREATE TABLE IF NOT EXISTS public.members (
     dob TEXT,
     "startDate" TEXT,
     "isAdmin" BOOLEAN DEFAULT false,
-    "accessHistory" JSONB DEFAULT '[]'::jsonb,
+    "isMaster" BOOLEAN DEFAULT false,
     avatar TEXT,
-    note TEXT,
-    "createdAt" TIMESTAMPTZ DEFAULT now()
-);
-
--- 2. Create Projects Table
-CREATE TABLE IF NOT EXISTS public.projects (
-    id TEXT PRIMARY KEY,
-    name TEXT NOT NULL,
-    description TEXT,
-    color TEXT DEFAULT '#f59e0b',
+    tags JSONB DEFAULT '[]'::jsonb,
+    "projectRoles" JSONB DEFAULT '{}'::jsonb,
+    facebook TEXT,
+    tiktok TEXT,
+    "bankName" TEXT,
+    "bankAccount" TEXT,
+    "bankAccountName" TEXT,
+    "bankBranch" TEXT,
+    "accessHistory" JSONB DEFAULT '[]'::jsonb,
     status TEXT DEFAULT 'active',
-    "memberIds" JSONB DEFAULT '[]'::jsonb,
-    "leaderId" TEXT,
-    "startDate" TEXT,
-    "endDate" TEXT,
-    "isFrozen" BOOLEAN DEFAULT false,
     "createdAt" TIMESTAMPTZ DEFAULT now()
 );
 
--- 3. Create Tasks Table
-CREATE TABLE IF NOT EXISTS public.tasks (
-    id TEXT PRIMARY KEY,
-    title TEXT NOT NULL,
-    description TEXT,
-    "projectId" TEXT,
-    "assigneeIds" JSONB DEFAULT '[]'::jsonb,
-    status TEXT DEFAULT 'todo',
-    priority TEXT DEFAULT 'medium',
-    "dueDate" TEXT,
-    "tagIds" JSONB DEFAULT '[]'::jsonb,
-    attachments JSONB DEFAULT '[]'::jsonb,
-    "subtasks" JSONB DEFAULT '[]'::jsonb,
-    "comments" JSONB DEFAULT '[]'::jsonb,
-    "createdAt" TIMESTAMPTZ DEFAULT now()
-);
+-- Thêm các cột nếu bảng members đã tồn tại từ trước
+ALTER TABLE public.members ADD COLUMN IF NOT EXISTS "isMaster" BOOLEAN DEFAULT false;
+ALTER TABLE public.members ADD COLUMN IF NOT EXISTS tags JSONB DEFAULT '[]'::jsonb;
+ALTER TABLE public.members ADD COLUMN IF NOT EXISTS "projectRoles" JSONB DEFAULT '{}'::jsonb;
+ALTER TABLE public.members ADD COLUMN IF NOT EXISTS facebook TEXT;
+ALTER TABLE public.members ADD COLUMN IF NOT EXISTS tiktok TEXT;
+ALTER TABLE public.members ADD COLUMN IF NOT EXISTS "bankName" TEXT;
+ALTER TABLE public.members ADD COLUMN IF NOT EXISTS "bankAccount" TEXT;
+ALTER TABLE public.members ADD COLUMN IF NOT EXISTS "bankAccountName" TEXT;
+ALTER TABLE public.members ADD COLUMN IF NOT EXISTS "bankBranch" TEXT;
+ALTER TABLE public.members ADD COLUMN IF NOT EXISTS status TEXT DEFAULT 'active';
 
--- 4. Create Data Items (Storage for internal documents, links, settings)
-CREATE TABLE IF NOT EXISTS public.data_items (
-    id TEXT PRIMARY KEY,
-    title TEXT NOT NULL,
-    category TEXT DEFAULT 'general',
-    url TEXT,
-    description TEXT,
-    "createdAt" TIMESTAMPTZ DEFAULT now()
-);
-
--- 5. Create Tags Table
-CREATE TABLE IF NOT EXISTS public.tags (
-    id TEXT PRIMARY KEY,
-    name TEXT NOT NULL,
-    color TEXT DEFAULT '#f59e0b',
-    type TEXT DEFAULT 'general',
-    "createdAt" TIMESTAMPTZ DEFAULT now()
-);
-
--- 6. Create Notifications Table
+-- 4. Bổ sung bảng NOTIFICATIONS
 CREATE TABLE IF NOT EXISTS public.notifications (
     id TEXT PRIMARY KEY,
     "userId" TEXT NOT NULL,
     title TEXT NOT NULL,
-    message TEXT,
+    content TEXT,
     type TEXT DEFAULT 'info',
+    "linkId" TEXT,
     "isRead" BOOLEAN DEFAULT false,
-    "linkUrl" TEXT,
     "createdAt" TIMESTAMPTZ DEFAULT now()
 );
 
--- ==============================================================================
--- Row Level Security (RLS) & Policies
--- ==============================================================================
-ALTER TABLE public.members ENABLE ROW LEVEL SECURITY;
-ALTER TABLE public.projects ENABLE ROW LEVEL SECURITY;
-ALTER TABLE public.tasks ENABLE ROW LEVEL SECURITY;
-ALTER TABLE public.data_items ENABLE ROW LEVEL SECURITY;
-ALTER TABLE public.tags ENABLE ROW LEVEL SECURITY;
-ALTER TABLE public.notifications ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.notifications ADD COLUMN IF NOT EXISTS content TEXT;
+ALTER TABLE public.notifications ADD COLUMN IF NOT EXISTS "linkId" TEXT;
 
--- Allow public read & write access with anon key (customizable as needed)
+-- 5. Cấp quyền RLS công khai cho tất cả bảng
 DO $$
 DECLARE
     tbl text;
@@ -107,23 +138,8 @@ BEGIN
     FOR tbl IN 
         SELECT tablename FROM pg_tables WHERE schemaname = 'public' AND tablename IN ('members', 'projects', 'tasks', 'data_items', 'tags', 'notifications')
     LOOP
+        EXECUTE format('ALTER TABLE public.%I ENABLE ROW LEVEL SECURITY;', tbl);
         EXECUTE format('DROP POLICY IF EXISTS "Public access for %I" ON public.%I;', tbl, tbl);
         EXECUTE format('CREATE POLICY "Public access for %I" ON public.%I FOR ALL USING (true) WITH CHECK (true);', tbl, tbl);
     END LOOP;
 END $$;
-
--- ==============================================================================
--- Storage Bucket Setup for 'uploads'
--- ==============================================================================
-INSERT INTO storage.buckets (id, name, public)
-VALUES ('uploads', 'uploads', true)
-ON CONFLICT (id) DO NOTHING;
-
-DROP POLICY IF EXISTS "Public access for uploads bucket" ON storage.objects;
-CREATE POLICY "Public access for uploads bucket"
-ON storage.objects FOR ALL
-USING (bucket_id = 'uploads')
-WITH CHECK (bucket_id = 'uploads');
-
--- Enable Realtime
-ALTER PUBLICATION supabase_realtime ADD TABLE public.members, public.projects, public.tasks, public.data_items, public.tags, public.notifications;

@@ -32,7 +32,7 @@ export function renderProjects() {
         </div>
         <div style="display:flex;align-items:center;gap:12px;">
           <label style="display:flex;align-items:center;gap:8px;font-size:var(--fs-xs);cursor:pointer;"><div class="toggle ${showEndedProjects ? 'active' : ''}" id="toggle-ended-proj"></div>Dự án đã kết thúc</label>
-          ${isMaster() ? `<button class="btn btn-primary btn-sm" id="add-proj"><i data-lucide="plus"></i> Tạo dự án</button>` : ''}
+          ${isAdmin() ? `<button class="btn btn-primary btn-sm" id="add-proj"><i data-lucide="plus"></i> Tạo dự án</button>` : ''}
         </div>
       </div>
 
@@ -46,7 +46,7 @@ export function renderProjects() {
               <div class="card card-interactive proj-card" data-pid="${p.id}" style="cursor:pointer;padding:20px;position:relative;overflow:hidden; display:flex; flex-direction:column;">
                 <!-- Color accent bar -->
                 <div style="position:absolute;top:0;left:0;right:0;height:3px;background:${p.color};"></div>
-                ${isMaster() ? `<button class="btn-icon btn-ghost proj-edit-btn" data-pid="${p.id}" style="position:absolute;top:12px;right:12px;width:32px;height:32px;"><i data-lucide="edit-2" class="lucide-sm"></i></button>` : ''}
+                ${isAdmin() ? `<button class="btn-icon btn-ghost proj-edit-btn" data-pid="${p.id}" style="position:absolute;top:12px;right:12px;width:32px;height:32px;"><i data-lucide="edit-2" class="lucide-sm"></i></button>` : ''}
                 
                 <div style="display:flex;align-items:flex-start;gap:12px;margin-bottom:14px; flex:1;">
                   ${renderProjectAvatar(p, 'avatar-lg')}

@@ -488,23 +488,13 @@ async function checkAuthAndRender() {
   document.body.insertAdjacentHTML('beforeend', renderLoadingScreen());
   updateLoadingProgress(10);
 
-  const localUser = getCurrentUser();
-  if (localUser) {
-    updateLoadingProgress(60);
-    await initStore();
-    updateLoadingProgress(100);
-    renderApp();
-    handleDeepLinks();
-    hideLoadingScreen();
-    return;
-  }
-
   const { data: { session } } = await supabase.auth.getSession();
   updateLoadingProgress(30);
 
   const authUser = session?.user;
+  const localUser = getCurrentUser();
 
-  if (!authUser) {
+  if (!authUser && !localUser) {
     hideLoadingScreen();
     document.getElementById('app').innerHTML = '';
     showLoginModal().then(() => checkAuthAndRender());
@@ -515,14 +505,15 @@ async function checkAuthAndRender() {
   await initStore();
   updateLoadingProgress(80);
 
-  const email = authUser.email;
-  const normalizedEmail = String(email).toLowerCase().trim();
+  const email = authUser?.email || localUser?.sessionEmail || localUser?.gmail || localUser?.emailFE || localUser?.emailFPT;
+  const normalizedEmail = email ? String(email).toLowerCase().trim() : '';
   const members = getMembers();
   const matchedMember = members.find(m => {
+    if (localUser?.id && m.id === localUser.id) return true;
     const ms = [m.emailFE, m.emailFPT, m.gmail].filter(Boolean)
       .map(e => String(e).toLowerCase().trim())
       .filter(e => e.length > 0);
-    return ms.includes(normalizedEmail);
+    return normalizedEmail && ms.includes(normalizedEmail);
   });
 
   if (matchedMember) {
@@ -536,19 +527,21 @@ async function checkAuthAndRender() {
     const memberEmails = [matchedMember.emailFE, matchedMember.emailFPT, matchedMember.gmail]
       .filter(Boolean).map(e => String(e).toLowerCase().trim());
     const isMasterUser = matchedMember.isMaster || normalizedEmail === 'dhphat12@gmail.com' || memberEmails.includes('dhphat12@gmail.com');
-    const isAdminUser = matchedMember.isAdmin || isMasterUser;
+    const isAdminUser = Boolean(matchedMember.isAdmin) || isMasterUser;
     setCurrentUser({ ...matchedMember, sessionEmail: email, isAdmin: isAdminUser, isMaster: isMasterUser });
   } else if (normalizedEmail === 'dhphat12@gmail.com') {
     setCurrentUser({
-      id: authUser.id,
-      fullName: authUser.user_metadata?.full_name || email,
+      id: authUser?.id || 'master',
+      fullName: authUser?.user_metadata?.full_name || email,
       email: email,
       position: 'Master Hệ Thống',
-      avatar: authUser.user_metadata?.avatar_url,
+      avatar: authUser?.user_metadata?.avatar_url,
       isAdmin: true,
       isMaster: true,
       sessionEmail: email
     });
+  } else if (localUser) {
+    setCurrentUser(localUser);
   } else {
     await customAlert("Tài khoản của bạn (" + email + ") không có quyền truy cập hệ thống. Vui lòng liên hệ Admin.");
     supabase.auth.signOut();

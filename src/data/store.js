@@ -228,6 +228,12 @@ function setupRealtime() {
                 } else if (payload.eventType === 'UPDATE') {
                     const idx = list.findIndex(item => item.id === payload.new.id);
                     if (idx > -1) list[idx] = payload.new;
+                    if (table === 'members') {
+                        const cur = getCurrentUser();
+                        if (cur && cur.id === payload.new.id) {
+                            setCurrentUser({ ...cur, ...payload.new });
+                        }
+                    }
                 } else if (payload.eventType === 'DELETE') {
                     const idx = list.findIndex(item => item.id === payload.old.id);
                     if (idx > -1) list.splice(idx, 1);
@@ -238,18 +244,28 @@ function setupRealtime() {
 }
 
 // Projects
+const PROJECT_COLS = [
+    'id', 'name', 'code', 'description', 'color', 'status', 'logo',
+    'milestones', 'links', 'memberIds', 'leaderId', 'startDate', 'endDate', 'isFrozen', 'createdAt'
+];
+function filterProject(p) {
+    const r = {}; PROJECT_COLS.forEach(c => { if (p.hasOwnProperty(c)) r[c] = p[c]; }); return r;
+}
+
 export function getProjects() { return memStore.get(KEYS.projects); }
 export function getProject(id) { return getProjects().find(p => p.id === id); }
-export function addProject(p) {
+export async function addProject(p) {
     const a = getProjects(); a.push(p); emit();
-    supabase.from(KEYS.projects).insert([p]).then(({ error }) => { if (error) console.error(error); });
+    const { error } = await supabase.from(KEYS.projects).insert([filterProject(p)]);
+    if (error) console.error('addProject error:', error);
 }
-export function updateProject(id, u) {
+export async function updateProject(id, u) {
     const list = getProjects();
     const idx = list.findIndex(p => p.id === id);
     if (idx > -1) list[idx] = { ...list[idx], ...u };
     emit();
-    supabase.from(KEYS.projects).update(u).eq('id', id).then(({ error }) => { if (error) console.error(error); });
+    const { error } = await supabase.from(KEYS.projects).update(filterProject(u)).eq('id', id);
+    if (error) console.error('updateProject error:', error);
 }
 export function deleteProject(id) {
     const list = memStore.get(KEYS.projects); memStore.set(KEYS.projects, list.filter(p => p.id !== id));
@@ -506,7 +522,7 @@ export function updateSettings(u) {
 export function getCurrentUser() { return loadLocal(KEYS.currentUser); }
 export function setCurrentUser(u) { saveLocal(KEYS.currentUser, u); emit(); }
 export function isAdmin() { const u = getCurrentUser(); return u?.isAdmin === true || u?.isMaster === true; }
-export function isMaster() { return getCurrentUser()?.isMaster === true; }
+export function isMaster() { const u = getCurrentUser(); return u?.isMaster === true || u?.isAdmin === true; }
 export async function logout() {
     try { await supabase.auth.signOut(); } catch (e) { console.error('Logout error', e); }
     memStore.delete(KEYS.currentUser);
