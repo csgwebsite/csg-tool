@@ -33,7 +33,8 @@ export function showTaskModal(task = null, defaultProjectId = null, forceEdit = 
 
     const initialProjectId = task?.projectId || defaultProjectId;
     const initialReviewerId = task?.reviewerId || task?.createdBy || task?.assignerId || currentUser?.id;
-    let initialAssignees = initialProjectId ? members.filter(m => m.projectRoles && m.projectRoles[initialProjectId]) : [];
+    let projectMembers = initialProjectId ? members.filter(m => m.projectRoles && m.projectRoles[initialProjectId]) : [];
+    let initialAssignees = projectMembers.length > 0 ? projectMembers : members;
 
     // Ensure the initial reviewer is in the list so they can be rendered even if blocked/no project
     const currentReviewer = members.find(m => m.id === initialReviewerId);
@@ -509,7 +510,8 @@ export function showTaskModal(task = null, defaultProjectId = null, forceEdit = 
       const input = root.querySelector('#' + inputId);
       if (!dd || !input) return;
 
-      const filtered = members.filter(m => m.projectRoles && m.projectRoles[projectId]);
+      const projectMembers = projectId ? members.filter(m => m.projectRoles && m.projectRoles[projectId]) : [];
+      const filtered = projectMembers.length > 0 ? projectMembers : members;
 
       dd.innerHTML = filtered.map(m => `
           <div class="search-select-item ${m.id === input.dataset.value ? 'selected' : ''}" data-value="${m.id}">

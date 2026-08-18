@@ -126,31 +126,29 @@ export function showProjectModal(project = null, isViewMode = false) {
 
                 <div style="margin-top:20px;">
                   <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
-                    <div style="display:flex;align-items:center;cursor:pointer;user-select:none;" onclick="const c=document.getElementById('proj-tasks-list');const i=this.querySelector('.chevron-icon');if(c.style.display==='none'){c.style.display='flex';if(i)i.style.transform='rotate(90deg)';}else{c.style.display='none';if(i)i.style.transform='rotate(0deg)';}">
+                    <div style="display:flex;align-items:center;cursor:pointer;user-select:none;" onclick="const c=document.getElementById('proj-tasks-list');const i=this.querySelector('.chevron-icon');if(c){if(c.style.display==='none'){c.style.display='flex';if(i)i.style.transform='rotate(90deg)';}else{c.style.display='none';if(i)i.style.transform='rotate(0deg)';}}">
                       <i data-lucide="chevron-right" class="chevron-icon" style="width:16px;height:16px;color:var(--text-tertiary);transition:transform 0.2s;transform:rotate(0deg);"></i>
-                      <div style="font-size:var(--fs-xs);font-weight:600;text-transform:uppercase;color:var(--text-tertiary);letter-spacing:0.5px;margin-left:6px;">Danh sách Task</div>
+                      <div style="font-size:var(--fs-xs);font-weight:600;text-transform:uppercase;color:var(--text-tertiary);letter-spacing:0.5px;margin-left:6px;">Danh sách Task (${allTasks.length})</div>
                     </div>
                   </div>
-                  ${allTasks.length ? `
-                    <div id="proj-tasks-list" style="display:none;flex-direction:column;gap:8px;">
-                      ${allTasks.map(t => {
-          const assignee = members.find(m => m.id === t.assigneeId);
-          const isComplete = t.status === 'complete';
-          return `
-                        <div style="display:flex;align-items:center;gap:12px;padding:12px;background:var(--bg-card);border:1px solid var(--border-light);border-radius:var(--r-md);opacity:${isComplete ? '0.6' : '1'};">
-                          <div style="flex:1;min-width:0;">
-                            <div style="font-size:var(--fs-xs);font-weight:600;text-decoration:none;color:${isComplete ? 'var(--text-tertiary)' : 'var(--text-primary)'};" class="truncate">${escapeHtml(t.title)}</div>
-                            <div style="font-size:var(--fs-2xs);color:var(--text-tertiary);margin-top:4px;display:flex;gap:12px;">
-                                <span><i data-lucide="clock" class="lucide-sm" style="vertical-align:-2px;margin-right:2px;"></i> ${t.deadline ? formatDate(t.deadline.split('T')[0]) : '—'}</span>
-                                <span style="color:${t.status === 'pending_approval' ? 'var(--warning)' : (isComplete ? 'var(--success)' : 'var(--info)')}">${t.status === 'pending_approval' ? 'Chờ duyệt' : (isComplete ? 'Hoàn thành' : 'Đang làm')}</span>
-                            </div>
+                  <div id="proj-tasks-list" style="display:none;flex-direction:column;gap:8px;">
+                    ${allTasks.length ? allTasks.map(t => {
+                      const assignee = members.find(m => m.id === t.assigneeId);
+                      const isComplete = t.status === 'complete';
+                      return `
+                      <div style="display:flex;align-items:center;gap:12px;padding:12px;background:var(--bg-card);border:1px solid var(--border-light);border-radius:var(--r-md);opacity:${isComplete ? '0.6' : '1'};">
+                        <div style="flex:1;min-width:0;">
+                          <div style="font-size:var(--fs-xs);font-weight:600;text-decoration:none;color:${isComplete ? 'var(--text-tertiary)' : 'var(--text-primary)'};" class="truncate">${escapeHtml(t.title)}</div>
+                          <div style="font-size:var(--fs-2xs);color:var(--text-tertiary);margin-top:4px;display:flex;gap:12px;">
+                              <span><i data-lucide="clock" class="lucide-sm" style="vertical-align:-2px;margin-right:2px;"></i> ${t.deadline ? formatDate(t.deadline.split('T')[0]) : '—'}</span>
+                              <span style="color:${t.status === 'pending_approval' ? 'var(--warning)' : (isComplete ? 'var(--success)' : 'var(--info)')}">${t.status === 'pending_approval' ? 'Chờ duyệt' : (isComplete ? 'Hoàn thành' : 'Đang làm')}</span>
                           </div>
-                          ${assignee ? renderAvatar(assignee, 'avatar-xs', false) : ''}
                         </div>
-                        `;
-        }).join('')}
-                    </div>
-                  ` : '<div style="font-size:var(--fs-xs);color:var(--text-tertiary);padding:12px;text-align:center;background:var(--bg-body);border-radius:var(--r-sm);">Chưa có task nào trong dự án này.</div>'}
+                        ${assignee ? renderAvatar(assignee, 'avatar-xs', false) : ''}
+                      </div>
+                      `;
+                    }).join('') : '<div style="font-size:var(--fs-xs);color:var(--text-tertiary);padding:12px;text-align:center;background:var(--bg-app);border-radius:var(--r-sm);">Chưa có task nào trong dự án này.</div>'}
+                  </div>
                 </div>
 
               </div>

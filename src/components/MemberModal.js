@@ -229,7 +229,7 @@ export function showMemberModal(member = null, forceViewOnly = false, forceEdit 
         if (!roleEntries.length) return '';
         return `
                 <div style="margin-bottom:16px;">
-                  <div style="display:flex;align-items:center;cursor:pointer;user-select:none;margin-bottom:8px;" onclick="const c=document.getElementById('member-projects-list');const i=this.querySelector('.chevron-icon');if(c.style.display==='none'){c.style.display='flex';if(i)i.style.transform='rotate(90deg)';}else{c.style.display='none';if(i)i.style.transform='rotate(0deg)';}">
+                  <div style="display:flex;align-items:center;cursor:pointer;user-select:none;margin-bottom:8px;" onclick="const c=document.getElementById('member-projects-list');const i=this.querySelector('.chevron-icon');if(c){if(c.style.display==='none'){c.style.display='flex';if(i)i.style.transform='rotate(90deg)';}else{c.style.display='none';if(i)i.style.transform='rotate(0deg)';}}">
                     <i data-lucide="chevron-right" class="chevron-icon" style="width:16px;height:16px;color:var(--text-tertiary);transition:transform 0.2s;transform:rotate(0deg);"></i>
                     <div style="font-size:var(--fs-xs);font-weight:600;text-transform:uppercase;color:var(--text-tertiary);letter-spacing:0.04em;">Dự án đang tham gia</div>
                   </div>
@@ -262,7 +262,7 @@ export function showMemberModal(member = null, forceViewOnly = false, forceEdit 
         return `
               <div style="margin-top:20px;">
                 <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
-                  <div style="display:flex;align-items:center;cursor:pointer;user-select:none;" onclick="const c=document.getElementById('member-tasks-list');const i=this.querySelector('.chevron-icon');if(c.style.display==='none'){c.style.display='flex';if(i)i.style.transform='rotate(90deg)';}else{c.style.display='none';if(i)i.style.transform='rotate(0deg)';}">
+                  <div style="display:flex;align-items:center;cursor:pointer;user-select:none;" onclick="const c=document.getElementById('member-tasks-list');const i=this.querySelector('.chevron-icon');if(c){if(c.style.display==='none'){c.style.display='flex';if(i)i.style.transform='rotate(90deg)';}else{c.style.display='none';if(i)i.style.transform='rotate(0deg)';}}">
                     <i data-lucide="chevron-right" class="chevron-icon" style="width:16px;height:16px;color:var(--text-tertiary);transition:transform 0.2s;transform:rotate(0deg);"></i>
                     <div style="font-size:var(--fs-xs);font-weight:600;text-transform:uppercase;color:var(--text-tertiary);letter-spacing:0.04em;display:flex;align-items:center;gap:6px;"><i data-lucide="list-todo" class="lucide-sm"></i> Task liên quan</div>
                   </div>
