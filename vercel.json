@@ -5,6 +5,10 @@
             "destination": "/.well-known/apple-app-site-association"
         },
         {
+            "source": "/auth-callback.html",
+            "destination": "/auth-callback.html"
+        },
+        {
             "source": "/(.*)",
             "destination": "/index.html"
         }

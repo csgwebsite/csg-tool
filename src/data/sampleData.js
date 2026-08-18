@@ -1,8 +1,8 @@
 import { generateId } from '../utils/helpers.js';
 
 // User types that auto-get admin role
-export const ADMIN_POSITIONS = ['Cán bộ', 'Trưởng Ban', 'Trưởng phòng', 'Giám đốc'];
-export const MEMBER_POSITIONS = ['Trưởng Ban', 'Giám đốc', 'Trưởng phòng', 'Cán bộ', 'Thực tập sinh', 'Cộng tác viên'];
+export const ADMIN_POSITIONS = ['Chủ nhiệm', 'Phó Chủ nhiệm', 'Trưởng Ban', 'Phó Ban', 'Cán bộ', 'Trưởng phòng', 'Giám đốc'];
+export const MEMBER_POSITIONS = ['Chủ nhiệm', 'Phó Chủ nhiệm', 'Trưởng Ban', 'Phó Ban', 'Thành viên', 'Cộng tác viên', 'Cán bộ', 'Thực tập sinh'];
 
 export function getSampleData() {
     const tags = [

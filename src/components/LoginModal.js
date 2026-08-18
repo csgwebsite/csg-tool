@@ -13,14 +13,14 @@ export function showLoginModal() {
     const settings = getSettings();
     const logoBlock = settings?.customLogo
       ? `<div style="width:48px;height:48px;border-radius:12px;margin:0 auto 12px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#8b64fd,#7c3aed);background-image:url(${settings.customLogo});background-size:cover;background-position:center;"></div>`
-      : `<div style="width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,#8b64fd,#7c3aed);display:inline-flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;color:white;margin-bottom:12px;">F</div>`;
+      : `<div style="width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,#8b64fd,#7c3aed);display:inline-flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;color:white;margin-bottom:12px;">C</div>`;
 
     root.innerHTML = `
       <div style="background:#fff;border-radius:20px;width:100%;max-width:400px;box-shadow:0 20px 25px rgba(0,0,0,0.3);overflow:hidden;">
         <div style="text-align:center;padding:28px 24px 16px;">
           ${logoBlock}
-          <h2 style="font-size:16px;font-weight:700;color:#1f1f20;">FES Task</h2>
-          <p style="font-size:11px;color:#9ca3af;margin-top:4px;">Hệ thống quản trị nội bộ</p>
+          <h2 style="font-size:16px;font-weight:700;color:#1f1f20;">Cóc Task</h2>
+          <p style="font-size:11px;color:#9ca3af;margin-top:4px;">CLB Truyền thông Cóc Sài Gòn</p>
         </div>
         <div style="padding:0 16px 20px;display:flex;flex-direction:column;gap:12px;">
             <button type="button" id="google-login-btn" style="display:flex;align-items:center;justify-content:center;gap:12px;padding:12px 14px;cursor:pointer;border-radius:12px;border:1px solid #e5e7eb;background:#ffffff;width:100%;font-family:inherit;font-size:14px;font-weight:600;color:#1f1f20;transition:all 0.2s ease;">
@@ -33,7 +33,7 @@ export function showLoginModal() {
               Đăng nhập với Google
             </button>
         </div>
-        <div style="text-align:center;padding:12px;font-size:10px;color:#6b7280;border-top:1px solid #f3f4f6;">FPT Student Experience Space © 2026</div>
+        <div style="text-align:center;padding:12px;font-size:10px;color:#6b7280;border-top:1px solid #f3f4f6;">CLB Truyền thông Cóc Sài Gòn © 2026</div>
       </div>
     `;
 
@@ -48,11 +48,10 @@ export function showLoginModal() {
 
       if (isNative) {
         try {
-          // Redirect về trang trung gian trên web, trang này sẽ chuyển hướng vào app
           const { data, error } = await supabase.auth.signInWithOAuth({
             provider: 'google',
             options: {
-              redirectTo: 'https://task.fptsx.space/auth-callback.html',
+              redirectTo: window.location.origin + '/auth-callback.html',
               skipBrowserRedirect: true,
             }
           });
@@ -61,7 +60,6 @@ export function showLoginModal() {
             btn.innerHTML = 'Đăng nhập với Google';
             return;
           }
-          // Mở trình duyệt bằng Capacitor Browser plugin
           if (data?.url) {
             const { Browser } = await import('@capacitor/browser');
             await Browser.open({ url: data.url });
@@ -71,15 +69,19 @@ export function showLoginModal() {
           btn.innerHTML = 'Đăng nhập với Google';
         }
       } else {
-        // Web: giữ nguyên luồng mặc định (PKCE)
-        const { error } = await supabase.auth.signInWithOAuth({
-          provider: 'google',
-          options: {
-            redirectTo: window.location.origin
+        try {
+          const { error } = await supabase.auth.signInWithOAuth({
+            provider: 'google',
+            options: {
+              redirectTo: window.location.origin
+            }
+          });
+          if (error) {
+            await customAlert('Lỗi đăng nhập: ' + error.message, 'Lỗi');
+            btn.innerHTML = 'Đăng nhập với Google';
           }
-        });
-        if (error) {
-          await customAlert('Lỗi đăng nhập: ' + error.message, 'Lỗi');
+        } catch (e) {
+          await customAlert('Lỗi đăng nhập: ' + e.message, 'Lỗi');
           btn.innerHTML = 'Đăng nhập với Google';
         }
       }

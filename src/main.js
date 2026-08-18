@@ -488,6 +488,17 @@ async function checkAuthAndRender() {
   document.body.insertAdjacentHTML('beforeend', renderLoadingScreen());
   updateLoadingProgress(10);
 
+  const localUser = getCurrentUser();
+  if (localUser) {
+    updateLoadingProgress(60);
+    await initStore();
+    updateLoadingProgress(100);
+    renderApp();
+    handleDeepLinks();
+    hideLoadingScreen();
+    return;
+  }
+
   const { data: { session } } = await supabase.auth.getSession();
   updateLoadingProgress(30);
 

@@ -21,8 +21,8 @@ export function renderSidebar(activePage) {
   return `
     <aside class="sidebar" id="sidebar">
       <div class="sidebar-logo">
-        <div class="sidebar-logo-icon" style="${logoStyle}">${settings.customLogo ? '' : 'F'}</div>
-        <div class="sidebar-logo-text">FES Task<span>FPT Student Experience Space</span></div>
+        <div class="sidebar-logo-icon" style="${logoStyle}">${settings.customLogo ? '' : 'C'}</div>
+        <div class="sidebar-logo-text">Cóc Task<span>CLB Truyền thông Cóc Sài Gòn</span></div>
       </div>
       <nav class="sidebar-nav">
         <div class="sidebar-section-title">Menu</div>

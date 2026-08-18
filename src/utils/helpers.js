@@ -488,7 +488,7 @@ export function checkinToday(user, updateMemberFunc) {
     accessHistory.push(tStr);
     accessHistory = cleanupAccessHistory(accessHistory);
 
-    const key = 'fes_access_' + user.id;
+    const key = 'coctask_access_' + user.id;
     localStorage.setItem(key, JSON.stringify(accessHistory));
     if (updateMemberFunc) {
       updateMemberFunc(user.id, { accessHistory });
@@ -514,7 +514,7 @@ export function recoverYesterday(user, updateMemberFunc) {
     accessHistory.push(yStr);
     accessHistory = cleanupAccessHistory(accessHistory);
 
-    const key = 'fes_access_' + user.id;
+    const key = 'coctask_access_' + user.id;
     localStorage.setItem(key, JSON.stringify(accessHistory));
     if (updateMemberFunc) {
       updateMemberFunc(user.id, { accessHistory });

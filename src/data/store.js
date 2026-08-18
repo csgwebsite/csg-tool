@@ -1,7 +1,7 @@
 import { supabase } from './supabase.js';
 import { updateFavicon, generateId } from '../utils/helpers.js';
 
-const KEYS = { projects: 'projects', members: 'members', tasks: 'tasks', dataItems: 'data_items', tags: 'tags', notifications: 'notifications', currentUser: 'fes_current_user', settings: 'fes_settings' };
+const KEYS = { projects: 'projects', members: 'members', tasks: 'tasks', dataItems: 'data_items', tags: 'tags', notifications: 'notifications', currentUser: 'coctask_current_user', settings: 'coctask_settings' };
 
 const listeners = new Set();
 let emitTimeout = null;
@@ -25,7 +25,12 @@ function checkStorage() {
 }
 function loadLocal(k) {
     try {
-        if (checkStorage()) { const d = localStorage.getItem(k); return d ? JSON.parse(d) : memStore.has(k) ? memStore.get(k) : null; }
+        if (checkStorage()) {
+            let d = localStorage.getItem(k);
+            if (!d && k === 'coctask_current_user') d = localStorage.getItem('fes_current_user');
+            if (!d && k === 'coctask_settings') d = localStorage.getItem('fes_settings');
+            return d ? JSON.parse(d) : memStore.has(k) ? memStore.get(k) : null;
+        }
         return memStore.has(k) ? memStore.get(k) : null;
     } catch { return memStore.has(k) ? memStore.get(k) : null; }
 }

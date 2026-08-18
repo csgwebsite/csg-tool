@@ -34,12 +34,12 @@ export function renderDashboard() {
         <!-- Background -->
         <div class="dashboard-banner-bg"></div>
         <div style="position:relative;z-index:1;">
-          <div style="font-size:var(--fs-2xl);font-weight:900;color:var(--text-primary);">FES Task</div>
+          <div style="font-size:var(--fs-2xl);font-weight:900;color:var(--text-primary);letter-spacing:-0.02em;">Cóc Task</div>
           <div style="font-size:var(--fs-sm);color:var(--text-secondary);margin-top:2px;font-weight:500;">
             Xin chào <strong>${escapeHtml(user?.fullName || '')}</strong>
           </div>
           <div style="font-size:var(--fs-sm);color:var(--text-secondary);margin-top:2px;font-weight:500;">
-            Bạn đã đồng hành cùng FES <strong>${days}</strong> ngày!
+            Bạn đã đồng hành cùng Cóc Sài Gòn <strong>${days}</strong> ngày!
           </div>
         </div>
         <!-- Current user large avatar -->
