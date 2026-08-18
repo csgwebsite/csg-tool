@@ -4,7 +4,7 @@ import { showDataModal } from '../components/DataModal.js';
 
 const catIcons = { meeting: 'file-text', drive: 'hard-drive', tool: 'wrench', document: 'book-open' };
 const catLabels = { meeting: 'Biên bản họp', drive: 'Link Drive', tool: 'Công cụ', document: 'Tài liệu' };
-const catColors = { meeting: '#3b82f6', drive: '#10b981', tool: '#f59e0b', document: '#8b64fd' };
+const catColors = { meeting: '#3b82f6', drive: '#10b981', tool: '#f59e0b', document: '#d97706' };
 let activeCategory = 'all';
 
 export function renderData() {

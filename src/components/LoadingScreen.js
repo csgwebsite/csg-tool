@@ -51,7 +51,7 @@ export function renderLoadingScreen() {
 
   return `
     <div id="loading-screen" style="position:fixed; inset:0; background:#000000; z-index:9999; display:flex; flex-direction:column; align-items:center; justify-content:center; overflow:hidden;">
-      <div id="loading-fill" style="position:absolute; bottom:0; left:0; right:0; background:var(--primary, #8b64fd); height:0%; transition:height 0.1s linear;"></div>
+      <div id="loading-fill" style="position:absolute; bottom:0; left:0; right:0; background:var(--primary, #f59e0b); height:0%; transition:height 0.1s linear;"></div>
       <div class="loading-info-wrap">
         <div id="loading-percent">0%</div>
       </div>

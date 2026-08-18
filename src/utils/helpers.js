@@ -197,7 +197,7 @@ export function getResponsiveName(fullName) {
 }
 
 export function getAvatarColor(n) {
-  const c = ['#8b64fd', '#ec4899', '#f97316', '#10b981', '#3b82f6', '#ef4444', '#6366f1', '#14b8a6', '#f59e0b', '#e11d48'];
+  const c = ['#f59e0b', '#ec4899', '#f97316', '#10b981', '#3b82f6', '#ef4444', '#ea580c', '#14b8a6', '#d97706', '#e11d48'];
   let h = 0; for (let i = 0; i < (n || '').length; i++) h = n.charCodeAt(i) + ((h << 5) - h);
   return c[Math.abs(h) % c.length];
 }
@@ -212,7 +212,7 @@ export function renderAvatar(member, sizeClass = '', showBadge = true) {
 
 export function renderProjectAvatar(project, sizeClass = '') {
   if (project?.logo) return `<div class="avatar ${sizeClass}" style="background-image:url(${project.logo});background-size:cover;border-radius:var(--r-md);"></div>`;
-  return `<div class="avatar ${sizeClass}" style="background:${project?.color || '#8b64fd'};border-radius:var(--r-md);font-size:inherit;">${project?.name?.[0] || '?'}</div>`;
+  return `<div class="avatar ${sizeClass}" style="background:${project?.color || '#f59e0b'};border-radius:var(--r-md);font-size:inherit;">${project?.name?.[0] || '?'}</div>`;
 }
 
 export function updateFavicon(url) {

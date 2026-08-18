@@ -180,9 +180,13 @@
     color: var(--info-text);
 }
 
-.badge-purple {
+.badge-purple,
+.badge-primary,
+.badge-yellow,
+.badge-gold {
     background: var(--bg-badge);
-    color: var(--primary);
+    color: var(--primary-dark);
+    font-weight: 700;
 }
 
 .badge-neutral {
