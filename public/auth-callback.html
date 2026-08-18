@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Đang đăng nhập...</title>
+  <style>
+    body {
+      margin: 0; display: flex; align-items: center; justify-content: center;
+      min-height: 100vh; background: #1f1f20; color: white;
+      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+    .loader { text-align: center; }
+    .spinner {
+      width: 40px; height: 40px; border: 3px solid rgba(255,255,255,0.2);
+      border-top-color: #8b64fd; border-radius: 50%; margin: 0 auto 16px;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+</head>
+<body>
+  <div class="loader">
+    <div class="spinner"></div>
+    <p>Đang đăng nhập...</p>
+  </div>
+  <script>
+    // Trang này nhận token từ Supabase OAuth và chuyển hướng vào app native
+    (function() {
+      var hash = window.location.hash.substring(1); // Bỏ dấu #
+      var query = window.location.search.substring(1); // Bỏ dấu ?
+      var params = hash || query;
+
+      if (params) {
+        // Chuyển hướng vào app native với token
+        var appUrl = 'com.dhphat.festool://login?' + params;
+        window.location.replace(appUrl);
+
+        // Fallback: nếu app không mở được, quay về trang chính sau 3 giây
+        setTimeout(function() {
+          window.location.replace('https://task.fptsx.space');
+        }, 3000);
+      } else {
+        // Không có token, quay về trang chính
+        window.location.replace('https://task.fptsx.space');
+      }
+    })();
+  </script>
+</body>
+</html>
