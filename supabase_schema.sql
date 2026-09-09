@@ -75,6 +75,7 @@ ALTER TABLE public.tasks ADD COLUMN IF NOT EXISTS links JSONB DEFAULT '[]'::json
 CREATE TABLE IF NOT EXISTS public.members (
     id TEXT PRIMARY KEY,
     "fullName" TEXT NOT NULL,
+    mssv TEXT,
     phone TEXT,
     "emailFE" TEXT,
     "emailFPT" TEXT,
@@ -90,6 +91,7 @@ CREATE TABLE IF NOT EXISTS public.members (
     "isAdmin" BOOLEAN DEFAULT false,
     "isMaster" BOOLEAN DEFAULT false,
     avatar TEXT,
+    note TEXT,
     tags JSONB DEFAULT '[]'::jsonb,
     "projectRoles" JSONB DEFAULT '{}'::jsonb,
     facebook TEXT,
@@ -104,6 +106,8 @@ CREATE TABLE IF NOT EXISTS public.members (
 );
 
 -- Thêm các cột nếu bảng members đã tồn tại từ trước
+ALTER TABLE public.members ADD COLUMN IF NOT EXISTS mssv TEXT;
+ALTER TABLE public.members ADD COLUMN IF NOT EXISTS note TEXT;
 ALTER TABLE public.members ADD COLUMN IF NOT EXISTS "isMaster" BOOLEAN DEFAULT false;
 ALTER TABLE public.members ADD COLUMN IF NOT EXISTS tags JSONB DEFAULT '[]'::jsonb;
 ALTER TABLE public.members ADD COLUMN IF NOT EXISTS "projectRoles" JSONB DEFAULT '{}'::jsonb;
