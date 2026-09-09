@@ -11,9 +11,8 @@ export function showLoginModal() {
     root.style.cssText = 'min-height:100vh;display:flex;align-items:center;justify-content:center;background:#1f1f20;';
 
     const settings = getSettings();
-    const logoBlock = settings?.customLogo
-      ? `<div style="width:48px;height:48px;border-radius:12px;margin:0 auto 12px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#8b64fd,#7c3aed);background-image:url(${settings.customLogo});background-size:cover;background-position:center;"></div>`
-      : `<div style="width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,#8b64fd,#7c3aed);display:inline-flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;color:white;margin-bottom:12px;">C</div>`;
+    const logoUrl = settings?.customLogo || '/favicon.jpg';
+    const logoBlock = `<div style="width:54px;height:54px;border-radius:14px;margin:0 auto 12px;display:flex;align-items:center;justify-content:center;background-image:url(${logoUrl});background-size:cover;background-position:center;box-shadow:0 4px 14px rgba(245,158,11,0.25);"></div>`;
 
     root.innerHTML = `
       <div style="background:#fff;border-radius:20px;width:100%;max-width:400px;box-shadow:0 20px 25px rgba(0,0,0,0.3);overflow:hidden;">

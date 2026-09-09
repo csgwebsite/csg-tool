@@ -276,7 +276,7 @@ export function renderAnalytics() {
         <div class="card" style="padding:20px;">
           <div class="section-title" style="margin-bottom:14px;">Logo trang web</div>
           <div style="display:flex;align-items:center;gap:16px;">
-            <div id="logo-preview" style="width:56px;height:56px;border-radius:var(--r-lg);background:linear-gradient(135deg,var(--primary),var(--primary-dark));display:flex;align-items:center;justify-content:center;font-size:1.5rem;font-weight:800;color:white;background-size:cover;background-position:center;${settings.customLogo ? `background-image:url(${settings.customLogo});font-size:0;` : ''}">${settings.customLogo ? '' : 'F'}</div>
+            <div id="logo-preview" style="width:56px;height:56px;border-radius:var(--r-lg);background-size:cover;background-position:center;background-image:url(${settings.customLogo || '/favicon.jpg'});box-shadow:var(--shadow-sm);"></div>
             <div>
               <label class="btn btn-outline btn-sm" style="cursor:pointer;"><i data-lucide="upload"></i> Upload<input type="file" id="logo-upload" accept="image/*" style="display:none;" /></label>
               ${settings.customLogo ? `<button class="btn btn-sm btn-ghost" id="reset-logo"><i data-lucide="rotate-ccw"></i></button>` : ''}

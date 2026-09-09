@@ -16,12 +16,13 @@ export function renderSidebar(activePage) {
   ];
   if (adminUser) navItems.push({ id: 'analytics', label: 'Analytics', icon: 'bar-chart-3' });
 
-  const logoStyle = settings.customLogo ? `background-image:url(${settings.customLogo});background-size:cover;font-size:0;` : '';
+  const logoUrl = settings.customLogo || '/favicon.jpg';
+  const logoStyle = `background-image:url(${logoUrl});background-size:cover;background-position:center;`;
 
   return `
     <aside class="sidebar" id="sidebar">
       <div class="sidebar-logo">
-        <div class="sidebar-logo-icon" style="${logoStyle}">${settings.customLogo ? '' : 'C'}</div>
+        <div class="sidebar-logo-icon" style="${logoStyle}"></div>
         <div class="sidebar-logo-text">Cóc Task<span>CLB Truyền thông Cóc Sài Gòn</span></div>
       </div>
       <nav class="sidebar-nav">

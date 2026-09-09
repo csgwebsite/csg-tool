@@ -33,19 +33,17 @@
 }
 
 .sidebar-logo-icon {
-    width: 34px;
-    height: 34px;
-    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-    border-radius: var(--r-sm);
+    width: 36px;
+    height: 36px;
+    border-radius: var(--r-md);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: var(--fs-sm);
-    font-weight: 800;
-    color: white;
     flex-shrink: 0;
     background-size: cover;
     background-position: center;
+    background-image: url('/favicon.jpg');
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
 }
 
 .sidebar-logo-text {
