@@ -298,7 +298,7 @@ function birthdayItemHtml(b) {
 function anniversaryItemHtml(a) {
   if (!a) return '';
   const isMilestone = a.type === 'milestone';
-  const label = isMilestone ? `Kỉ niệm ${a.years} năm ${a.title}` : `Kỉ niệm ${a.years} năm làm việc của ${escapeHtml(a.fullName)}`;
+  const label = isMilestone ? `Kỉ niệm ${a.years} năm ${a.title}` : `Kỉ niệm ${a.years} năm đồng hành của ${escapeHtml(a.fullName)}`;
   const avatar = isMilestone ? `<div class="avatar avatar-sm" style="background:var(--primary);"><i data-lucide="calendar" style="width:14px;height:14px;color:white;"></i></div>` : renderAvatar(a, 'avatar-sm');
 
   return `<div class="birthday-item">
